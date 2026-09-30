@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0c7q7vi" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.51.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0">
+  <bpmn:process id="application-process-go" name="Обработка заявки — BPMN + Go" isExecutable="true" camunda:historyTimeToLive="30">
+    <bpmn:startEvent id="StartEvent_1" name="Заявка получена">
+      <bpmn:outgoing>Flow_0p0c26c</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:exclusiveGateway id="Gateway_0xgqq3h" name="Заявка одобрена?">
+      <bpmn:incoming>Flow_103jjq7</bpmn:incoming>
+      <bpmn:outgoing>Flow_01et1u2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1jt59fn</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="Activity_1976ibf" name="Одобрить заявку">
+      <bpmn:incoming>Flow_1jt59fn</bpmn:incoming>
+      <bpmn:outgoing>Flow_0qsxeup</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Activity_1jqpemp" name="Отклонить заявку">
+      <bpmn:incoming>Flow_01et1u2</bpmn:incoming>
+      <bpmn:outgoing>Flow_0zcrpt0</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="Event_16zvubf" name="Заявка обработана">
+      <bpmn:incoming>Flow_0qsxeup</bpmn:incoming>
+      <bpmn:incoming>Flow_0zcrpt0</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0p0c26c" sourceRef="StartEvent_1" targetRef="Activity_1ej9p8f" />
+    <bpmn:sequenceFlow id="Flow_103jjq7" sourceRef="Activity_1ej9p8f" targetRef="Gateway_0xgqq3h" />
+    <bpmn:sequenceFlow id="Flow_01et1u2" sourceRef="Gateway_0xgqq3h" targetRef="Activity_1jqpemp">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${approved == false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1jt59fn" sourceRef="Gateway_0xgqq3h" targetRef="Activity_1976ibf">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${approved == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0qsxeup" sourceRef="Activity_1976ibf" targetRef="Event_16zvubf" />
+    <bpmn:sequenceFlow id="Flow_0zcrpt0" sourceRef="Activity_1jqpemp" targetRef="Event_16zvubf" />
+    <bpmn:serviceTask id="Activity_1ej9p8f" name="Проверить заявку" camunda:type="external" camunda:topic="check-application">
+      <bpmn:incoming>Flow_0p0c26c</bpmn:incoming>
+      <bpmn:outgoing>Flow_103jjq7</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="application-process-go">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="362" y="142" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="337" y="112" width="87" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0xgqq3h_di" bpmnElement="Gateway_0xgqq3h" isMarkerVisible="true">
+        <dc:Bounds x="355" y="435" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="353" y="492" width="56" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1976ibf_di" bpmnElement="Activity_1976ibf">
+        <dc:Bounds x="160" y="420" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_16zvubf_di" bpmnElement="Event_16zvubf">
+        <dc:Bounds x="362" y="582" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="350" y="625" width="61" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1jqpemp_di" bpmnElement="Activity_1jqpemp">
+        <dc:Bounds x="510" y="420" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_18pth77_di" bpmnElement="Activity_1ej9p8f">
+        <dc:Bounds x="330" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0p0c26c_di" bpmnElement="Flow_0p0c26c">
+        <di:waypoint x="380" y="178" />
+        <di:waypoint x="380" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_103jjq7_di" bpmnElement="Flow_103jjq7">
+        <di:waypoint x="380" y="350" />
+        <di:waypoint x="380" y="435" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01et1u2_di" bpmnElement="Flow_01et1u2">
+        <di:waypoint x="405" y="460" />
+        <di:waypoint x="510" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1jt59fn_di" bpmnElement="Flow_1jt59fn">
+        <di:waypoint x="355" y="460" />
+        <di:waypoint x="260" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qsxeup_di" bpmnElement="Flow_0qsxeup">
+        <di:waypoint x="260" y="460" />
+        <di:waypoint x="311" y="460" />
+        <di:waypoint x="311" y="600" />
+        <di:waypoint x="362" y="600" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0zcrpt0_di" bpmnElement="Flow_0zcrpt0">
+        <di:waypoint x="510" y="460" />
+        <di:waypoint x="454" y="460" />
+        <di:waypoint x="454" y="600" />
+        <di:waypoint x="398" y="600" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

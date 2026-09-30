@@ -1,0 +1,31 @@
+Запуск modeler (ubuntu):
+
+./camunda-modeler --no-sandbox --disable-gpu --ozone-platform=x11
+
+
+
+Термины
+
+Process Definition -> описание процесса (application-process-go)
+
+Process Instance -> запущенный экземпляр процесса (780e1825-bcc0-11f1-896d-8a40c87aa5ce)
+
+Process Definition Key -> ключ процесса (application-process-go)
+
+Process Definition ID -> ID конкретной версии процесса (application-process-go:1:44390d24-...)
+
+Process Instance ID -> ID конкретного запуска (780e1825-bcc0-11f1-896d-8a40c87aa5ce)
+
+Business Key -> бизнесовый ID процесса/заявки (go-test-001)
+
+Deployment -> загрузка процесса в Camunda (Deploy application-process-go.bpmn)
+
+BPMN -> описание бизнес-процесса (Start Event -> Task -> Gateway -> Task -> End Event)
+
+Service Task -> автоматизированная задача
+
+External Task -> задача для внешнего worker-а (topic = "check-application")
+
+Topic -> тип External Task (check-application)
+
+Task ID -> ID External Task (780e664b-bcc3-11f1-896d-8a40c87aa5ce)
